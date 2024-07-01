@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-void printBoard(const vector<vector<char>> board) {
+void printBoard(vector<vector<char>> board) {
     int n = board.size();
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -29,28 +29,34 @@ bool isSafe(vector<vector<char>> board, int row, int col) {
     return true;
 }
 
-void nKnights(vector<vector<char>> board, int row, int knightsPlaced) {
+int nKnights(vector<vector<char>>& board, int row, int knightsPlaced) {
     int n = board.size();
     if (knightsPlaced == n) {
         printBoard(board);
-        return;
+        return 1;
     }
     if (row == n) {
-        return;
+        return 0;
     }
+
+    int count = 0;
 
     for (int j = 0; j < n; j++) {
         if (isSafe(board, row, j)) {
             board[row][j] = 'K';
-            nKnights(board, row + 1, knightsPlaced + 1);
+            count += nKnights(board, row + 1, knightsPlaced + 1);
             board[row][j] = '.';
         }
     }
-    nKnights(board, row + 1, knightsPlaced);
+    count += nKnights(board, row + 1, knightsPlaced);
+
+    return count;
 }
 
 int main() {
     int n = 4;
     vector<vector<char>> board(n, vector<char>(n, '.'));
-    nKnights(board, 0, 0);
+    int count = nKnights(board, 0, 0);
+    cout << "Total counts: " << count << endl;
+    return 0;
 }
