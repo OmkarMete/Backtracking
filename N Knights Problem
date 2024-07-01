@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+void printBoard(const vector<vector<char>> board) {
+    int n = board.size();
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cout << board[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << "********" << endl;
+}
+
+bool isSafe(vector<vector<char>> board, int row, int col) {
+    int n = board.size();
+    int knightMoves[8][2] = {{-2, -1}, {-2, 1}, {-1, -2}, {-1, 2}, {1, -2}, {1, 2}, {2, -1}, {2, 1}};
+    
+    for (int i = 0; i < 8; i++) {
+        int newRow = row + knightMoves[i][0];
+        int newCol = col + knightMoves[i][1];
+        
+        if (newRow >= 0 && newRow < n && newCol >= 0 && newCol < n && board[newRow][newCol] == 'K') {
+            return false;
+        }
+    }
+    return true;
+}
+
+void nKnights(vector<vector<char>> board, int row, int knightsPlaced) {
+    int n = board.size();
+    if (knightsPlaced == n) {
+        printBoard(board);
+        return;
+    }
+    if (row == n) {
+        return;
+    }
+
+    for (int j = 0; j < n; j++) {
+        if (isSafe(board, row, j)) {
+            board[row][j] = 'K';
+            nKnights(board, row + 1, knightsPlaced + 1);
+            board[row][j] = '.';
+        }
+    }
+    nKnights(board, row + 1, knightsPlaced);
+}
+
+int main() {
+    int n = 4;
+    vector<vector<char>> board(n, vector<char>(n, '.'));
+    nKnights(board, 0, 0);
+}
