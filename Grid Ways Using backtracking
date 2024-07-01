@@ -1,0 +1,29 @@
+// Grid Ways
+// TC = O(2^(n+m))
+// String ans for Showing Direction
+
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace  std;
+
+int gridWay(int r, int c, int n, int m, string ans){ 
+    if(r == n-1 && c == n-1){
+        cout << ans <<"\n";
+        return 1;
+    }
+    if(r >= n || c >= m){
+        return 0;
+    }
+    int val1 = gridWay(r, c+1, n, m, ans+"R");
+    int val2 = gridWay(r+1, c, n, m, ans+"D");
+    return val1 + val2;
+}
+int main(){
+    int n = 3;
+    int m = 3;
+    string ans ="";
+    int totalWays = gridWay(0, 0, n, m, ans);
+    cout <<"Total Ways : " << totalWays << endl;
+    return 0;
+}
